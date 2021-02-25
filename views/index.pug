@@ -1,0 +1,24 @@
+extends layout.pug
+
+block content
+
+  article.portfolio-intro 
+    h1 My Portfolio 
+ 
+    p Hello to all prospective employers. Welcome to my portfolio page where I have gathered a collection of some completed projects. They are displayed here to market my skills in web development. Looking forward to hearing from fellow developers and teams. Thank you!
+
+
+  article.portfolio-project-thumbs
+    .projects-box.box.grid
+
+      each project in projects
+        .cell
+          a(href=`/projects/${project.id}`)
+            img.thumbnail(src=`${project.image_urls[0]}`, alt=`${project.project_name}`)
+            h5= project.project_name
+
+        //- .cell
+        //-   a(href='#')
+        //-     img.thumbnail(src='https://placehold.it/550x550', alt='')
+        //-     h5 My Site
+
