@@ -23,37 +23,42 @@ app.get('/about', (req, res) => {
 
 // Individual Projects
 app.get('/projects/:id', (req, res) => {
-  let found = data.projects.some(project => project.id === +req.params.id);
+  const project = data.projects[req.params.id];
 
-  if (found) {
-    data.projects.forEach(project => {
-      if (project.id === +req.params.id) {
-        res.render('project', { project });
-      }
-    })
-  }
+  res.render('project', { project });
 })
 
 /* ---------------------------------------------------------------------------------------------------- */
 // Error Handlers
+// 404 Handler
 app.use((req, res, next) => {
-  const err = new Error('The page you requested cannot be found.');
+  const err = new Error('The page you requested cannot be found');
   err.status = 404;
+  console.log(`${err.status}. ${err.message}`);
   next(err);
 })
 
+// Global Handler
 app.use((error, req, res, next) => {
+  // Ensure Error Object Has Status & Message Properties Defined
+  error.status = error.status || 500;
+  error.message = error.message || 'Server error';
+
+  // Set Response Status
   res.status(error.status);
-  
+
+  // Render Template Based On Status Code
   if (res.statusCode === 404) {
     res.render('page-not-found', { error });
   }
   else {
-    const errorGlobal = new Error('Something went wrong');
-    res.render('error', { errorGlobal });
+    console.log(`Sorry. There has been an error`);
+    
+    res.render('error', { error: {
+      status: error.status,
+      message: 'Server error'
+    } });
   }
-
-  next();
 })
 
 /* ---------------------------------------------------------------------------------------------------- */
