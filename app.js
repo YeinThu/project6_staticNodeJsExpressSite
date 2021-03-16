@@ -23,7 +23,7 @@ app.get('/about', (req, res) => {
 
 // Individual Projects
 app.get('/projects/:id', (req, res) => {
-  const project = data.projects[req.params.id];
+  const project = data.projects[req.params.id - 1];
 
   res.render('project', { project });
 })
